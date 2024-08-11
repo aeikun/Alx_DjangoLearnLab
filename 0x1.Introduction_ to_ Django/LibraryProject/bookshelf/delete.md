@@ -1,7 +1,12 @@
-# Delete Operation
+# delete.md
 
-Command:
+## Deleting a Book Instance
+
 ```python
-book = Book.objects.get(title='Nineteen Eighty-Four')
+from bookshelf.models import Book
+# Delete the book instance
+book = Book.objects.get(title="Nineteen Eighty-Four")
 book.delete()
-print(Book.objects.all())
+# Confirm deletion
+all_books = Book.objects.all()
+print(all_books)  # Should show an empty list if deletion was successful
