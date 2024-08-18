@@ -1,25 +1,45 @@
+import django
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
+django.setup()
+
 from relationship_app.models import Author, Book, Library, Librarian
 
-def sample_queries():
-    # Query all books by a specific author
-    author_name = "George Orwell"
-    author = Author.objects.get(name=author_name)
-    books_by_author = Book.objects.filter(author=author)
-    print(f"Books by {author_name}:")
-    for book in books_by_author:
-        print(book.title)
+def query_books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        books = author.books.all()
+        for book in books:
+            print(book.title)
+    except Author.DoesNotExist:
+        print(f"Author {author_name} does not exist.")
 
-    # List all books in a library
-    library_name = "Central Library"
-    library = Library.objects.get(name=library_name)
-    books_in_library = library.books.all()
-    print(f"Books in {library_name}:")
-    for book in books_in_library:
-        print(book.title)
+def list_books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.books.all()
+        for book in books:
+            print(book.title)
+    except Library.DoesNotExist:
+        print(f"Library {library_name} does not exist.")
 
-    # Retrieve the librarian for a library
-    librarian = Librarian.objects.get(library=library)
-    print(f"Librarian for {library_name}: {librarian.name}")
+def retrieve_librarian_for_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        librarian = library.librarian
+        print(librarian.name)
+    except Library.DoesNotExist:
+        print(f"Library {library_name} does not exist.")
+    except Librarian.DoesNotExist:
+        print(f"Librarian for library {library_name} does not exist.")
 
 if __name__ == "__main__":
-    sample_queries()
+    print("Books by Author 'John Doe':")
+    query_books_by_author('John Doe')
+    
+    print("\nBooks in Library 'Central Library':")
+    list_books_in_library('Central Library')
+    
+    print("\nLibrarian for Library 'Central Library':")
+    retrieve_librarian_for_library('Central Library')
