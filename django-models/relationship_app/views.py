@@ -22,6 +22,10 @@ class RegisterView(CreateView):
     template_name = 'relationship_app/register.html'
     success_url = reverse_lazy('login')
 
+def register(request):
+    view = RegisterView.as_view()
+    return view(request)
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
