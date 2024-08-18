@@ -18,7 +18,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('book_list')
+            return redirect('list_books')
     else:
         form = BookForm()
     return render(request, 'relationship_app/book_form.html', {'form': form})
@@ -30,7 +30,7 @@ def edit_book(request, pk):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('book_detail', pk=book.pk)
+            return redirect('library_detail', pk=book.pk)
     else:
         form = BookForm(instance=book)
     return render(request, 'relationship_app/book_form.html', {'form': form})
