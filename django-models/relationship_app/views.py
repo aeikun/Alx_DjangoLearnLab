@@ -48,7 +48,7 @@ def is_member(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin, login_url='your_custom_error_page')
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
