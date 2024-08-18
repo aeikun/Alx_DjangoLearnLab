@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Book, Library, UserProfile
+from .models import Book, UserProfile
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from .models import Library
 
 def list_books(request):
     books = Book.objects.all()
