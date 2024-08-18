@@ -26,6 +26,15 @@ class RegisterView(CreateView):
 def register(request):
     view = RegisterView.as_view()
     return view(request)
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('list_books')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
