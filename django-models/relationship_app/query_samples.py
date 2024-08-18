@@ -41,6 +41,6 @@ def retrieve_librarian_for_library(library_name):
 
 # Example usage
 if __name__ == "__main__":
-    query_books_by_author('J.K. Rowling')
-    list_books_in_library('Central Library')
-    retrieve_librarian_for_library('Central Library')
+    query_books_by_author('Ahmed Sefroui')
+    list_books_in_library('Chefchaouen Library')
+    retrieve_librarian_for_library('Chefchaouen Library')
