@@ -1,5 +1,5 @@
 # relationship_app/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
@@ -39,6 +39,16 @@ class UserRegisterView(View):
             form.save()
             return render(request, 'relationship_app/login.html')
         return render(request, self.template_name, {'form': form})
+
+    def register(request):
+        if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('login')
+        else:
+            form = UserCreationForm()
+            return render(request, 'relationship_app/register.html', {'form': form})
 
 class UserLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
