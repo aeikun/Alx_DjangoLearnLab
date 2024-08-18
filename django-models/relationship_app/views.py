@@ -27,8 +27,8 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)  # Make sure to use the login function here
-            return redirect('list_books')  # Redirect to a list of books or appropriate page
+            login(request, user)
+            return redirect('list_books')  # Redirect to the list of books or another appropriate page
     else:
         form = AuthenticationForm()
     return render(request, 'relationship_app/login.html', {'form': form})
