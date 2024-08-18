@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Book, Library
 from django.views.generic.detail import DetailView
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout  # Ensure this import is present
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
@@ -26,7 +26,7 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
+            login(request, user)  # Make sure to use the login function here
             return redirect('list_books')  # Redirect to a list of books or appropriate page
     else:
         form = AuthenticationForm()
