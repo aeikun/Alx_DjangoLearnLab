@@ -6,6 +6,20 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
 
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view post"),
+            ("can_create", "Can create post"),
+            ("can_edit", "Can edit post"),
+            ("can_delete", "Can delete post"),
+        ]
+
+    def __str__(self):
+        return self.title
 
 class SomeModel(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

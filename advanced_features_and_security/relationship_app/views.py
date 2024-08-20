@@ -10,6 +10,27 @@ from django.contrib.auth.decorators import user_passes_test
 from .models import Library
 from django.contrib.auth.decorators import permission_required
 from .forms import BookForm
+from .models import Post
+
+
+@permission_required('relationship_app.can_view', raise_exception=True)
+def view_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, 'relationship_app/view_post.html', {'post': post})
+
+@permission_required('relationship_app.can_edit', raise_exception=True)
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == "POST":
+        # Update the post
+        pass
+    return render(request, 'relationship_app/edit_post.html', {'post': post})
+
+@permission_required('relationship_app.can_delete', raise_exception=True)
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.delete()
+    return redirect('post_list')
 
 def list_books(request):
     books = Book.objects.all()
