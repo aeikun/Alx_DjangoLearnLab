@@ -144,3 +144,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Ensure cookies are sent over HTTPS
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
+# Ensure that all non-HTTPS requests are redirected to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Set the HSTS policy
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
