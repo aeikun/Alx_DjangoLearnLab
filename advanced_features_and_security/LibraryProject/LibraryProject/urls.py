@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import book_list, raise_exception, books
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('books/', book_list, name='book_list'),
+    path('raise/', raise_exception, name='raise_exception'),
+    path('books-view/', books, name='books'),
 ]
