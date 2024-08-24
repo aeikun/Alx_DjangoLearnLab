@@ -2,7 +2,34 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import CustomUser
 
+class CustomUserAdmin(BaseUserAdmin):
+    model = CustomUser
+    # Define the fieldsets to display in the user form
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'date_of_birth', 'profile_photo')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions', 'groups')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    # Define the add_fieldsets to display in the user creation form
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2', 'date_of_birth', 'profile_photo'),
+        }),
+    )
+    # Define the list display fields
+    list_display = ('username', 'email', 'date_of_birth', 'is_staff')
+    # Define the search fields
+    search_fields = ('email', 'username')
+    # Define the ordering fields
+    ordering = ('email',)
+
+# Register the CustomUser model with the CustomUserAdmin class
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -44,6 +71,6 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
     objects = CustomUserManager()
-    
+
     def __str__(self):
         return self.username
