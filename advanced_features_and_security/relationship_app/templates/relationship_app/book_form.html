@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Add/Edit Book{% endblock %}</title>
+</head>
+<body>
+    <h1>{% block heading %}Add/Edit Book{% endblock %}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="{% url 'list_books' %}">Back to book list</a>
+</body>
+</html>
