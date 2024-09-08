@@ -2,11 +2,18 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
 from .serializers import BookSerializer
+from .filters import BookFilter
+from rest_framework.filters import SearchFilter
+
 
 # List view for all books
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filterset_class = BookFilter
+    search_fields = ['title', 'author']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # Default ordering
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only access for unauthenticated users
 
 # Detail view for a single book
