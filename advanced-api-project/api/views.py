@@ -1,10 +1,19 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, NumberFilter
 from .models import Book
 from .serializers import BookSerializer
-from .filters import BookFilter
+
+# Define a filter set for Book model
+class BookFilter(FilterSet):
+    title = CharFilter(lookup_expr='icontains')  # Filter books by title
+    author = CharFilter(lookup_expr='icontains')  # Filter books by author
+    publication_year = NumberFilter(lookup_expr='exact')  # Filter books by publication year
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
 
 # List view for all books
 class BookListView(generics.ListCreateAPIView):
