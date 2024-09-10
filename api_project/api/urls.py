@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('', include(router.urls)),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('books/', BookListView.as_view(), name='book-list'),
     path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # Retrieve
     path('books/new/', BookCreateView.as_view(), name='book-create'),  # Create
     path('books/<int:pk>/edit/', BookUpdateView.as_view(), name='book-update'),  # Update
