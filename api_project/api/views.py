@@ -3,9 +3,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, NumberFilter
 from .models import Book
 from .serializers import BookSerializer
-from .filters import filters  # Import your filters module
 
-# Define a filter set for Book model
+# Define a filter set for the Book model
 class BookFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')  # Filter books by title
     author = CharFilter(lookup_expr='icontains')  # Filter books by author
@@ -19,9 +18,9 @@ class BookFilter(FilterSet):
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
+    filter_backends = (DjangoFilterBackend, )  # Add other filters if necessary
     filterset_class = BookFilter
-    search_fields = ['title', 'author']
+    search_fields = ['title', 'author']  # Ensure these fields are searchable
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']  # Default ordering
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only access for unauthenticated users
