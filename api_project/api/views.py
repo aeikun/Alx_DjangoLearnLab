@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, NumberFilter
 from .models import Book
 from .serializers import BookSerializer
@@ -40,6 +41,9 @@ class BookCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         # Additional custom logic before saving a book
+        title = serializer.validated_data.get('title')
+        if Book.objects.filter(title=title).exists():
+            raise serializers.ValidationError("A book with this title already exists.")
         serializer.save()
 
 # Update view for modifying an existing book
@@ -56,4 +60,4 @@ class BookUpdateView(generics.UpdateAPIView):
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Restrict to authenticated users only
+    permission_classes = [IsAdminUser]  # Restrict to authenticated users only
