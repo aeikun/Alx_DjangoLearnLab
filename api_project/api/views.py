@@ -38,11 +38,19 @@ class BookCreateView(generics.CreateAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]  # Restrict to authenticated users only
 
+    def perform_create(self, serializer):
+        # Additional custom logic before saving a book
+        serializer.save()
+
 # Update view for modifying an existing book
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]  # Restrict to authenticated users only
+
+    def perform_update(self, serializer):
+        # Additional custom logic before updating a book
+        serializer.save()
 
 # Delete view for removing a book
 class BookDeleteView(generics.DestroyAPIView):
