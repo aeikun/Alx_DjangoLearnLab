@@ -5,6 +5,47 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, NumberFilter
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import BasePermission
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from .permissions import IsAdminOrReadOnly
+
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Custom permission to only allow admins to edit objects.
+    Read-only access is granted to any user.
+    """
+
+    def has_permission(self, request, view):
+        # Allow read-only access for any user (GET, HEAD, OPTIONS requests)
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+        
+        # Allow write access only for admin users (POST, PUT, DELETE requests)
+        return request.user and request.user.is_staff
+    
+class IsEditorOrReadOnly(BasePermission):
+    """
+    Custom permission to allow only editors to edit objects.
+    """
+
+    def has_permission(self, request, view):
+        # Allow read-only access for any user
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+
+        # Allow write access only for users with the "editor" role
+        return request.user and request.user.role == 'editor'
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAdminOrReadOnly])
+def book_list(request):
+    if request.method == 'GET':
+        # Get book list logic here
+        return Response({"message": "List of books"})
+    elif request.method == 'POST':
+        # Create book logic here
+        return Response({"message": "Book created"})
 
 # Define a filter set for the Book model
 class BookFilter(FilterSet):
