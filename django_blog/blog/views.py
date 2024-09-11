@@ -14,7 +14,7 @@ def register(request):
             return redirect('profile')
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'templates/registration/register.html', {'form': form})
 
 # User profile view
 @login_required
@@ -26,12 +26,12 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserChangeForm(instance=request.user)
-    return render(request, 'registration/profile.html', {'form': form})
+    return render(request, 'templates/registration/profile.html', {'form': form})
 
 # User login view (built-in)
 from django.contrib.auth.views import LoginView
 class CustomLoginView(LoginView):
-    template_name = 'registration/login.html'
+    template_name = 'templates/registration/login.html'
 
 # User logout view (built-in)
 from django.contrib.auth.views import LogoutView
