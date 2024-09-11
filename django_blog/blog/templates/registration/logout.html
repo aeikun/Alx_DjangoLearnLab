@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Include your CSS file -->
+</head>
+<body>
+    <h1>You have been logged out</h1>
+    <p>Thank you for visiting. You have been successfully logged out.</p>
+    <p><a href="{% url 'login' %}">Login again</a></p>
+    <p><a href="{% url 'home' %}">Go to Home</a></p> <!-- Adjust this link to your homepage or another relevant page -->
+</body>
+</html>

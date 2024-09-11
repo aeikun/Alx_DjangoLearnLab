@@ -22,4 +22,4 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
     
     def __str__(self):
-        return self.title
+        return self.user.username
