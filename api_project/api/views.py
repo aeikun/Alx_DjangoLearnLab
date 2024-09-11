@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, NumberFilter
 from .models import Book
@@ -13,6 +14,16 @@ class BookFilter(FilterSet):
     class Meta:
         model = Book
         fields = ['title', 'author', 'publication_year']
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = (DjangoFilterBackend, )
+    filterset_class = BookFilter
+    search_fields = ['title', 'author']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 # List view for all books
 class BookListView(generics.ListCreateAPIView):
