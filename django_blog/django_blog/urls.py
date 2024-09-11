@@ -21,8 +21,8 @@ from .views import register, profile, CustomLoginView, CustomLogoutView
 urlpatterns = [
      path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('register/', register, name='register'),
-    path('profile/', profile, name='profile'),
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('templates/registration/', register, name='register'),
+    path('templates/registration/', profile, name='profile'),
+    path('templates/registration/', CustomLoginView.as_view(), name='login'),
+    path('templates/registration/', CustomLogoutView.as_view(), name='logout'),
 ]
