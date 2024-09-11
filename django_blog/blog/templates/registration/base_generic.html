@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Blog{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-    {% block extra_head %}{% endblock %}
+    <script src="{% static 'scripts/scripts.js' %}"></script>
 </head>
 <body>
     <header>
+        <h1>My Blog</h1>
         <nav>
-            <!-- Navigation links -->
+            <ul>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
         </nav>
     </header>
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
     <footer>
-        <!-- Footer content -->
+        <p>&copy; 2024 My Blog</p>
     </footer>
-    {% block extra_content %}{% endblock %}
 </body>
 </html>
