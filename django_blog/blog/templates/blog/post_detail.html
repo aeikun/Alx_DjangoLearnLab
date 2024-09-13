@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p>By {{ post.author }} on {{ post.date_posted }}</p>
+
+    {% if user == post.author %}
+        <a href="{% url 'post-update' post.pk %}">Edit</a> | 
+        <a href="{% url 'post-delete' post.pk %}">Delete</a>
+    {% endif %}
+    <a href="{% url 'post-list' %}">Back to Posts</a>
+{% endblock %}
