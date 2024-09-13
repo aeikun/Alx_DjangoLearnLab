@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -12,29 +12,36 @@ from django.db.models import Q
 from django.views.generic import ListView
 from taggit.models import Tag
 
-# User registration view
-def register(request):
+def user_register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('profile')
+            form.save()
+            return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, '/templates/registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
-# User profile view
+def user_login(request):
+    # Use Django's built-in login view
+    return render(request, 'registration/login.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
+
 @login_required
-def profile(request):
-    if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        form = UserChangeForm(instance=request.user)
-    return render(request, '/templates/registration/profile.html', {'form': form})
+def user_profile(request):
+    return render(request, 'registration/profile.html')
+
+class UserProfileUpdateView(UpdateView):
+    model = User
+    form_class = UserChangeForm
+    template_name = 'registration/profile_edit.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 # User login view (built-in)
 from django.contrib.auth.views import LoginView

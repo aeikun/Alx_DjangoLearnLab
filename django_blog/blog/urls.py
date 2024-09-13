@@ -10,6 +10,11 @@ from .views import (
     CommentDeleteView,
     post_search,
     PostListByTagView,
+    user_register,
+    user_login,
+    user_logout,
+    user_profile,
+    UserProfileUpdateView,
 )
 
 urlpatterns = [
@@ -27,4 +32,10 @@ urlpatterns = [
 
     path('search/', post_search, name='post-search'),
     path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts-by-tag'),
+
+    path('register/', user_register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('profile/', user_profile, name='profile'),
+    path('profile/edit/', UserProfileUpdateView.as_view(), name='profile-edit'),
 ]
