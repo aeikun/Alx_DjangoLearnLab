@@ -4,6 +4,7 @@ from django import forms
 from django.urls import reverse
 from django.utils import timezone
 from .models import Post
+from taggit.managers import TaggableManager
 
 
 class Post(models.Model):
@@ -48,3 +49,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
+    
+class Post(models.Model):
+    # Other fields
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    # Add tagging functionality
+    tags = TaggableManager()
