@@ -10,3 +10,23 @@
     {% endif %}
     <a href="{% url 'post-list' %}">Back to Posts</a>
 {% endblock %}
+
+<hr>
+  <h3>Comments</h3>
+  {% for comment in object.comments.all %}
+    <div>
+      <strong>{{ comment.author }}</strong> said: {{ comment.content }} <br>
+      {% if comment.author == user %}
+        <a href="{% url 'edit-comment' comment.id %}">Edit</a> |
+        <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <h3>Add a new comment</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}
