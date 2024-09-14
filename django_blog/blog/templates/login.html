@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Correct CSS file reference -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Example for CSS file -->
 </head>
 <body>
     <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
-        <!-- Add your login form fields here -->
+        <!-- Your form fields -->
         <button type="submit">Login</button>
     </form>
 </body>

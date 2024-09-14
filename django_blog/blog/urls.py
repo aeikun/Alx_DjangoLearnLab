@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
     PostListView,
     PostDetailView,
@@ -38,4 +40,4 @@ urlpatterns = [
     path('logout/', user_logout, name='logout'),
     path('profile/', user_profile, name='profile'),
     path('profile/edit/', UserProfileUpdateView.as_view(), name='profile-edit'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
