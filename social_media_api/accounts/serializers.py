@@ -18,6 +18,6 @@ class UserSerializer(serializers.ModelSerializer):
             bio=validated_data.get('bio', ''),
             profile_picture=validated_data.get('profile_picture', None)
         )
-        token = Token.objects.create(user=user)
+        Token.objects.create(user=user)
         
         return user
