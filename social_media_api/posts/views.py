@@ -14,7 +14,7 @@ from notifications.models import Notification
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    # Use get_object_or_404 to retrieve the post
+    # Use generics.get_object_or_404 to retrieve the post
     post = get_object_or_404(Post, pk=pk)
     
     # Use get_or_create to like the post or prevent multiple likes
@@ -37,7 +37,7 @@ def like_post(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, pk):
-    # Use get_object_or_404 to retrieve the post
+    # Use generics.get_object_or_404 to retrieve the post
     post = get_object_or_404(Post, pk=pk)
 
     # Check if the like exists and delete it
