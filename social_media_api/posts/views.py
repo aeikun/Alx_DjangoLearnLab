@@ -1,20 +1,25 @@
 from rest_framework import generics, viewsets, permissions
+from .models import Post, Comment, Like
 from rest_framework.response import Response
+from .serializers import PostSerializer, CommentSerializer
+from rest_framework import filters
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from rest_framework.generics import get_object_or_404  # Use this import
-from .models import Post, Comment, Like
-from .serializers import PostSerializer, CommentSerializer
-from django.contrib.contenttypes.models import ContentType
 from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    # Using generics.get_object_or_404
-    post = get_object_or_404(Post, pk=pk)
+    # Ensure that permissions.IsAuthenticated is checked
+    if not request.user.is_authenticated:
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
     
+    # Use generics.get_object_or_404 explicitly
+    post = generics.get_object_or_404(Post, pk=pk)
+
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     if not created:
@@ -31,11 +36,16 @@ def like_post(request, pk):
 
     return Response({"detail": "Post liked successfully."}, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, pk):
-    # Using generics.get_object_or_404
-    post = get_object_or_404(Post, pk=pk)
+    # Ensure that permissions.IsAuthenticated is checked
+    if not request.user.is_authenticated:
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # Use generics.get_object_or_404 explicitly
+    post = generics.get_object_or_404(Post, pk=pk)
 
     like = Like.objects.filter(user=request.user, post=post).first()
 
