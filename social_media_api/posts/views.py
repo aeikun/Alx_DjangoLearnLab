@@ -14,20 +14,19 @@ from notifications.models import Notification
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
+    # Use get_object_or_404 to retrieve the post
     post = get_object_or_404(Post, pk=pk)
-    user = request.user
+    
+    # Use get_or_create to like the post or prevent multiple likes
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
 
-    # Check if user already liked the post
-    if Like.objects.filter(post=post, user=user).exists():
+    if not created:
         return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Create a like
-    Like.objects.create(post=post, user=user)
-
+    
     # Create a notification for the post author
     Notification.objects.create(
         recipient=post.author,
-        actor=user,
+        actor=request.user,
         verb='liked your post',
         target_content_type=ContentType.objects.get_for_model(post),
         target_object_id=post.id
@@ -38,18 +37,17 @@ def like_post(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, pk):
+    # Use get_object_or_404 to retrieve the post
     post = get_object_or_404(Post, pk=pk)
-    user = request.user
 
-    # Check if user liked the post
-    like = Like.objects.filter(post=post, user=user).first()
-    if not like:
+    # Check if the like exists and delete it
+    like = Like.objects.filter(user=request.user, post=post).first()
+
+    if like:
+        like.delete()
+        return Response({"detail": "Post unliked successfully."}, status=status.HTTP_200_OK)
+    else:
         return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Delete the like
-    like.delete()
-
-    return Response({"detail": "Post unliked successfully."}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
