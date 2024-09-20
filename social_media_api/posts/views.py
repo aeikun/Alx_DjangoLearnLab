@@ -1,8 +1,20 @@
-from rest_framework import viewsets, permissions
+from rest_framework import generics, viewsets, permissions
 from .models import Post, Comment
 from rest_framework.response import Response
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import filters
+
+class UserFeedView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        # Get the current user
+        user = self.request.user
+        # Get the users the current user is following
+        following_users = user.following.all()
+        # Return posts authored by the following users, ordered by creation date (most recent first)
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
 class FeedViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
