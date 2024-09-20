@@ -1,8 +1,17 @@
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
+from rest_framework.response import Response
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import filters
 
+class FeedViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        followed_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
