@@ -18,4 +18,6 @@ urlpatterns = [
     path('posts/<int:pk>/like/', like_post, name='like-post'),
     path('posts/<int:pk>/unlike/', unlike_post, name='unlike-post'),
     path('notifications/', get_notifications, name='get-notifications'),
+    path('posts/', include('posts.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
