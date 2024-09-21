@@ -54,3 +54,19 @@ def unlike_post(request, pk):
         return Response({"detail": "Post unliked successfully."}, status=status.HTTP_200_OK)
     else:
         return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+class FeedViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        # Get the users the current user is following
+        following_users = request.user.following.all()
+
+        # Get the posts authored by the following users, ordered by creation date
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+        # Serialize the posts
+        serializer = PostSerializer(posts, many=True)
+
+        # Return the serialized data
+        return Response(serializer.data)
