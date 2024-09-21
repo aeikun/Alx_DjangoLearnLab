@@ -102,3 +102,4 @@ class CommentViewSet(viewsets.ModelViewSet):
         if self.action in ['update', 'partial_update', 'destroy']:
             return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
         return super().get_permissions()
+    
