@@ -70,3 +70,35 @@ class FeedViewSet(viewsets.ViewSet):
 
         # Return the serialized data
         return Response(serializer.data)
+    
+# ViewSet for Posts
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()  # Retrieve all posts
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Assign the current user as the author when creating a post
+        serializer.save(author=self.request.user)
+
+    def get_permissions(self):
+        # Allow edit and delete only for the owner of the post
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
+        return super().get_permissions()
+
+# ViewSet for Comments
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()  # Retrieve all comments
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Assign the current user as the author when creating a comment
+        serializer.save(author=self.request.user)
+
+    def get_permissions(self):
+        # Allow edit and delete only for the owner of the comment
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
+        return super().get_permissions()
